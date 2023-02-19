@@ -1,0 +1,9 @@
+POST http://localhost/api/products
+accept: application/json
+content-type: application/json
+
+{
+    "title": "title41",
+    "image": "image411"
+}
+
