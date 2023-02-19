@@ -1,0 +1,73 @@
+version: '3'
+
+services:
+  nginx:
+    image: nginx:stable
+    container_name: main-nginx
+    ports:
+      - "81:80"
+    volumes:
+      - ./src:/var/www/html
+      - ./docker/nginx/default.conf:/etc/nginx/conf.d/default.conf
+    depends_on:
+      - php
+      - mysql
+
+
+  mysql:
+    image: mysql:8.0
+    container_name: main-mysql
+    restart: unless-stopped
+    tty: true
+    volumes:
+      - ./docker/mysql:/var/lib/mysql
+    ports:
+      - "3307:3306"
+    environment:
+      MYSQL_DATABASE: main
+      MYSQL_USER: homestead
+      MYSQL_PASSWORD: secret
+      MYSQL_ROOT_PASSWORD: secret
+      SERVICE_TAGS: dev
+      SERVICE_NAME: mysql
+
+
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin
+    container_name: main_phpmyadmin
+    restart: always
+    environment:
+      - PMA_ARBITRARY=1
+      - PMA_HOST=mysql
+      - PMA_PORT=3306
+    ports:
+      - 127.0.0.1:85:80
+    volumes:
+      - /sessions
+    links:
+      - mysql
+
+
+  php:
+    build:
+      context: .
+      dockerfile: ./docker/php/Dockerfile
+    container_name: main-php
+    volumes:
+      - ./src:/var/www/html
+    ports:
+      - "9001:9000"
+
+
+  main-redis:
+    image: redis:alpine
+    container_name: main-redis
+    restart: unless-stopped
+    ports:
+      - 6378:6379
+
+networks:
+  default:
+    name: "mm-network"
+    external: true
+

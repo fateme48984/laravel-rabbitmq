@@ -1,0 +1,8 @@
+.buildpath
+.project
+.idea
+.settings/*
+.DS_Store
+*.DS_Store
+/docker/mysql
+/docker/rabbitmq
