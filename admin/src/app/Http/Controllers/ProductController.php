@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Jobs\ProductCreated;
+use App\Jobs\ProductDeleted;
+use App\Jobs\ProductUpdated;
 use App\Models\Product;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
@@ -37,7 +39,7 @@ class ProductController extends Controller
     {
         $product->update($request->only('title', 'image'));
 
-//        ProductUpdated::dispatch($product->toArray())->onQueue('main_queue');
+        ProductUpdated::dispatch($product->toArray());
 
         return response($product, Response::HTTP_ACCEPTED);
     }
@@ -46,7 +48,7 @@ class ProductController extends Controller
     {
         Product::destroy($product);
 
-   //     ProductDeleted::dispatch($product->id)->onQueue('main_queue');
+        ProductDeleted::dispatch($product->id);
 
         return response(null, Response::HTTP_NO_CONTENT);
     }

@@ -1,9 +1,4 @@
-POST http://localhost/api/products
+DELETE http://localhost/api/products/47
 accept: application/json
 content-type: application/json
-
-{
-    "title": "title41",
-    "image": "image411"
-}
 
