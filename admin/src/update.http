@@ -1,0 +1,9 @@
+PUT http://localhost/api/products/1
+accept: application/json
+content-type: application/json
+
+{
+    "title": "title1_updated",
+    "image": "image1_updated"
+}
+
